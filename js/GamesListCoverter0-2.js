@@ -25,7 +25,7 @@ class Controls{
 }
 
 class Game{ //I'm convinced I can build this with amHeaders, but I can't figure it out yet
-  constructor(name, title, cloneof, year, manufacturer, category, players, control, buttons, emulator){
+  constructor(name, title, emulator, cloneof, year, manufacturer, category, players, control, buttons){
     this.name = name;
     this.title = title;
     this.emulator = emulator;
@@ -64,8 +64,8 @@ fetcher('https://raw.githubusercontent.com/Stothe/Games-List-Project/main/contro
         controls.push(new Controls($romname, $control, $buttons));
      });
 
-    $('.stat').text("Controls data loaded!");
-
+    $('.stat').text("Controls data loaded!"); //update status <p>
+//  console.log(controls);
   });
 
 /*
@@ -89,9 +89,12 @@ function gamesListParser(){
              let image;
              let marquee;
              let video;
-             image = test[i].querySelector("image").innerHTML;
-             marquee = test[i].querySelector("marquee").innerHTML;
-             video = test[i].querySelector("video").innerHTML;
+             try {
+               image = test[i].querySelector("image").innerHTML;
+               marquee = test[i].querySelector("marquee").innerHTML;
+               video = test[i].querySelector("video").innerHTML;
+             } catch {console.log("not all folders matched")}
+
 
              if(image && marquee && video){ // need to make sure it found all fields
                let paths = [image, marquee, video];
@@ -128,6 +131,7 @@ function gamesListParser(){
       let myButtons;
       let emulator = document.getElementById("emulator").value;
 
+
       //pull in matching data from controls array
       let controllerData = controls.find(x => x.rom === amName);
 
@@ -146,11 +150,16 @@ function gamesListParser(){
 
     $('.stat').text(games.length + " games processed");
 
+    console.log(games[5]);
+
     // launch the file builder
-    buildTXTList();
+  buildTXTList();
   }
 }
 
+/* File Builder.  Creates downloadable txt file
+*
+*/
 /* File Builder.  Creates downloadable txt file
 *
 */
@@ -160,11 +169,11 @@ function buildTXTList(){
       gamesTxt = gamesTxt + `${games[i][property]};`;
 
     }
-    gamesTxt = gamesTxt + "\n";
+    let gamesTxtFix = gamesTxt.slice(0, -1);
+    gamesTxt = gamesTxtFix + "\n";
   }
-  downloadToFile(gamesTxt, 'arcade.txt', 'text/plain' );
+  downloadToFile(gamesTxt, 'Arcade.txt', 'text/plain' );
 }
-
 
 // Helper Functions
 
