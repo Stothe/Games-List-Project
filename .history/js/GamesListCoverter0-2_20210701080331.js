@@ -13,7 +13,6 @@ const gamesList = document.querySelector('.gamesList');
 let games = [];
 let gamesTxt = `#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons \n`
 let paths = [];
-let pathSearch = 0;
 
 // Main FUNCTIONS
 
@@ -83,29 +82,8 @@ function updateStatus(message){
   document.querySelector('.stat').innerHTML = message;
 }
 
- /**
-   * Function to read user-provided XML and return it to the game list parser
-   * @arguments {file} gamelist.xml file
-   * wrapping the local file XML fetching into a promise
-   * h/t https://simon-schraeder.de/posts/filereader-async/
-   */
-  function readFileAsync(file) {
-    return new Promise((resolve, reject) => {
-      let reader = new FileReader();
-  
-      reader.onload = () => {
-        resolve(reader.result);
-        };
-  
-      reader.onerror = reject;
-  
-      reader.readAsBinaryString(file);
-    })
-  }
- 
-
-
 // Event Listeners
+
 
 //When a file is uploaded via the button, kick off all the action and hide the form
 document.querySelector('#odfxml').addEventListener('change', () => {
@@ -116,3 +94,5 @@ document.querySelector('#odfxml').addEventListener('change', () => {
   $("#upload").hide();
   updateStatus('Please Wait.  This may take several minutes. <br/> Your computer fan may spin up and sound like it is going to blast off');
 });
+
+
