@@ -13,7 +13,6 @@ const gamesList = document.querySelector('.gamesList');
 let games = [];
 let gamesTxt = `#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons \n`
 let paths = [];
-let pathSearch = 0;
 
 // Main FUNCTIONS
 
