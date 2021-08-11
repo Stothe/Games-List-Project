@@ -6,12 +6,17 @@
  */
 async function gamesListParser(){
 
+    // fetcher('https://raw.githubusercontent.com/Stothe/Games-List-Project/main/gamelist.xml')
+    // .then(xml => {
     console.log("gamesListParser executing");
     const file = document.getElementById("odfxml").files[0];
     const fileData = await readFileAsync(file);
 
     //jQuery parser to convert text string from file to JSON-like objects
     let xmlData = $.parseXML(fileData);
+    // special characters seem to be corrupting metadata.  Stripping those out fixes some but not all
+    // https://www.w3schools.com/jsref/jsref_replace.asp
+    // no, turns out $.parseXML jquery wasn't working on line 15.  Fixed that.
    
       //loop through all games and parse data into Game objects
       $(xmlData).find('game').each(function(){
@@ -56,6 +61,7 @@ async function gamesListParser(){
     buildTXTList();
   }
 
+
   /**
    * Update existing Attract mode meta data list
    * 
@@ -66,30 +72,31 @@ async function amMetaDataBuild() {
   const file = document.getElementById("odfxml").files[0];
   const fileData = await readFileAsync(file);
 
+  // console.log(fileData);
+
   // split into 2d array /n by ;
 
   // line
   let amListSplit = fileData.split("\n");
   let amListSplitGames = [];
+  // console.log(amListSplit[2]);
 
-  // split each line break out required elements
+  // split each line, push into array
   for (let index = 1; index < amListSplit.length; index++) {  //index is 1 we're skipping the first row which are labels
     const element = amListSplit[index].split(";");
-  
+    console.log(element);
+    // amListSplitGames.push(element);    
     let name = element[0];
     let title = element[1];
-    let year = element[4];
-    let manu = element[3];
-    let cat = element[6];
+    let manu = element[2];
+    let cat = element[3];
 
-    //weed out empty entries
-    if(element[1]){
-      pushGame(name, title, year, manu, cat);
-    }
+    console.log(name, title, manu, cat);
   }
-//  create the text file for download
-  buildTXTList();
+//  console.log(amListSplitGames[2]);
+ // buildTXTList();
 }
+
 
 /**
  * Push a rom as a new Game object based on extracted data from appropriate game list functions

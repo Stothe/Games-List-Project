@@ -56,6 +56,7 @@ async function gamesListParser(){
     buildTXTList();
   }
 
+
   /**
    * Update existing Attract mode meta data list
    * 
@@ -66,16 +67,19 @@ async function amMetaDataBuild() {
   const file = document.getElementById("odfxml").files[0];
   const fileData = await readFileAsync(file);
 
+
   // split into 2d array /n by ;
 
   // line
   let amListSplit = fileData.split("\n");
   let amListSplitGames = [];
+  // console.log(amListSplit[2]);
 
-  // split each line break out required elements
+  // split each line, push into array
   for (let index = 1; index < amListSplit.length; index++) {  //index is 1 we're skipping the first row which are labels
     const element = amListSplit[index].split(";");
-  
+    console.log(element);
+    // amListSplitGames.push(element);    
     let name = element[0];
     let title = element[1];
     let year = element[4];
