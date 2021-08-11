@@ -1,17 +1,20 @@
 
 /**
  * Main function to convert the user-provided XML (EmulationStation) gamelist, convert it and push entries to the games object.
- * 
- * Functionality added to simply take data from an attract mode list .txt and push those to games objects.
  */
 async function gamesListParser(){
 
+    // fetcher('https://raw.githubusercontent.com/Stothe/Games-List-Project/main/gamelist.xml')
+    // .then(xml => {
     console.log("gamesListParser executing");
     const file = document.getElementById("odfxml").files[0];
     const fileData = await readFileAsync(file);
 
     //jQuery parser to convert text string from file to JSON-like objects
     let xmlData = $.parseXML(fileData);
+    // special characters seem to be corrupting metadata.  Stripping those out fixes some but not all
+    // https://www.w3schools.com/jsref/jsref_replace.asp
+    // no, turns out $.parseXML jquery wasn't working on line 15.  Fixed that.
    
       //loop through all games and parse data into Game objects
       $(xmlData).find('game').each(function(){
@@ -43,72 +46,27 @@ async function gamesListParser(){
               renderPaths($image, $marquee, $video);
             }   
         }
+// END THIS FUNCTION HERE.  Add a new function for native AM list parsing
 
-        // add game to object array
-        pushGame($amName, $title, $year, $manufacturer, $category);
 
-    });
 
-    // these last two commands exist within the function, possibly should be their own helper
-    $('.stat').text(games.length + " games processed "); //updates DOM
+        //create new Game object using the fields and add it to array
+        // malformed entries seem to crap all over the list. Putting a check in
+        //TURN THIS INTO A  STANDALONE FUNCTION
+        if($title.length < 128) {
+            
+            games.push(new Game($amName, $title,  $year, $manufacturer, $category));
+        } else {
+
+            console.log("skipping " + $amName + " bad metadata detected" );
+        }  
+     });
   
-    // launch the file builder
+      $('.stat').text(games.length + " games processed ");
+  
+      // launch the file builder
     buildTXTList();
   }
-
-  /**
-   * Update existing Attract mode meta data list
-   * 
-   */
-async function amMetaDataBuild() {
-  console.log("AM button works!");
-  console.log("gamesListParser (AM edition) executing");
-  const file = document.getElementById("odfxml").files[0];
-  const fileData = await readFileAsync(file);
-
-  // split into 2d array /n by ;
-
-  // line
-  let amListSplit = fileData.split("\n");
-  let amListSplitGames = [];
-
-  // split each line break out required elements
-  for (let index = 1; index < amListSplit.length; index++) {  //index is 1 we're skipping the first row which are labels
-    const element = amListSplit[index].split(";");
-  
-    let name = element[0];
-    let title = element[1];
-    let year = element[4];
-    let manu = element[3];
-    let cat = element[6];
-
-    //weed out empty entries
-    if(element[1]){
-      pushGame(name, title, year, manu, cat);
-    }
-  }
-//  create the text file for download
-  buildTXTList();
-}
-
-/**
- * Push a rom as a new Game object based on extracted data from appropriate game list functions
- * 
- * @param {string} name 
- * @param {string} title 
- * @param {string} year 
- * @param {string} manufacturer 
- * @param {string} category 
- */
-function pushGame(name, title, year, manufacturer, category) {
-
-  // sometimes bad metadata can slip through, this skips games in that case
-  if(title.length < 128) { 
-    games.push(new Game(name, title,  year, manufacturer, category));
-  } else {
-      console.log("skipping " + name + " bad metadata detected" );
-  }  
-}
 
   // Helper Functions
 
@@ -124,4 +82,3 @@ function renderPaths(image, marquee, video) {
     $(".pathNotes").append(`<li>${paths[j]}</li>`)
    }
 }
-

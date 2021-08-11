@@ -5,7 +5,6 @@
 //TO DO:
 
 // I want to get a good default scrape of AM to see how much wheel re-inventing there is here.
-
 //array to hold objects
 const metadataArray = [];
 
