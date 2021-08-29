@@ -127,6 +127,5 @@ document.querySelector('#odfxml').addEventListener('change', () => {
   }
 
   $("#upload").hide();
-  $("#filters").hide();
   updateStatus('Please Wait.  This may take several minutes. <br/> Your computer fan may spin up and sound like it is going to blast off');
 });

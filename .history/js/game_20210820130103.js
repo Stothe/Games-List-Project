@@ -58,14 +58,15 @@ class Game{
       
       // Use any row to get the rows' array length
       // Note, this assumes the rows are arrays of the same length
-      const numColumns = nplayerArray[0].length;
+      numColumns = nplayerArray[0].length;
       
       // row = the index in the 1d array divided by the row length (number of columns)
-      const row = parseInt(index / numColumns);
+      row = parseInt(index / numColumns);
       
       // col = index modulus the number of columns
-      const col = index % numColumns;
-      return nplayerArray[row][1]; 
+      col = index % numColumns;
+      console.log("item to find is at " + row +", " + col)
+      return [row, col]; 
   }
   
   }

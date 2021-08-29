@@ -65,7 +65,8 @@ class Game{
       
       // col = index modulus the number of columns
       const col = index % numColumns;
-      return nplayerArray[row][1]; 
+      console.log("item to find is at " + row +", " + col)
+      return [row, col]; 
   }
   
   }

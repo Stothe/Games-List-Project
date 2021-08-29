@@ -9,9 +9,7 @@ const heading = document.getElementById('heading');
 const status = document.getElementById('status');
 const stat = document.querySelector('.stat');
 const gamesList = document.querySelector('.gamesList');
-const filterProperties = ["control", "players", "rotation", "status"];
-const filterDivs = [".control", ".nplayer", ".rotation", ".status"]; //quick and dirty workaround to pass divs to filter function
-let nplayerArray = [];
+const controlDiv = document.getElementById('controlFilter');
 let games = [];
 let gamesTxt = `#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons \n`
 let paths = [];
@@ -23,22 +21,22 @@ let pathSearch = 0;
 * File Builder.  Creates the text file for user to download
 */
 function buildTXTList(){
-  //filterControls(".control"); //temp for testing
+  const controlArray = filterControls(); // gets filter data 
+    for (let i=0; i < games.length; i += 1) {
+    for (const property in games[i]){
 
-  //what if we put the filter here so it doesn't run against the entire game list?
-  filteredGames = filterControls();
+      //if statement here to compare property value to controlArray
+      if(Object.keys(property) == 'control'){
+        console.log(property);
+      }
+      gamesTxt = gamesTxt + `${games[i][property]};`;
 
-  for (let i=0; i < filteredGames.length; i += 1) {
-  for (const property in filteredGames[i]){
-    gamesTxt = gamesTxt + `${filteredGames[i][property]};`;
-
+    }
+    let gamesTxtFix = gamesTxt.slice(0, -1);
+    gamesTxt = gamesTxtFix + "\n";
   }
-  let gamesTxtFix = gamesTxt.slice(0, -1);
-  gamesTxt = gamesTxtFix + "\n";
+  downloadToFile(gamesTxt, 'Arcade.txt', 'text/plain' );
 }
-downloadToFile(gamesTxt, 'Arcade.txt', 'text/plain' );
-}
-
 
 // Helper Functions
 
@@ -127,6 +125,5 @@ document.querySelector('#odfxml').addEventListener('change', () => {
   }
 
   $("#upload").hide();
-  $("#filters").hide();
   updateStatus('Please Wait.  This may take several minutes. <br/> Your computer fan may spin up and sound like it is going to blast off');
 });
