@@ -51,21 +51,22 @@ class Game{
     //test for array
     //h/t https://lage.us/Javascript-Item-in-2d-Array-Using-indexOf.html
     getPlayers(itemtofind) {
-      const index = [].concat.apply([], ([].concat.apply([], nplayerArray))).indexOf(itemtofind);
+      index = [].concat.apply([], ([].concat.apply([], nplayerArray))).indexOf(itemtofind);
                   
       // return "false" if the item is not found
       if (index === -1) { return false; }
       
       // Use any row to get the rows' array length
       // Note, this assumes the rows are arrays of the same length
-      const numColumns = nplayerArray[0].length;
+      numColumns = nplayerArray[0].length;
       
       // row = the index in the 1d array divided by the row length (number of columns)
-      const row = parseInt(index / numColumns);
+      row = parseInt(index / numColumns);
       
       // col = index modulus the number of columns
-      const col = index % numColumns;
-      return nplayerArray[row][1]; 
+      col = index % numColumns;
+      console.log("item to find is at " + row +", " + col)
+      return [row, col]; 
   }
   
   }

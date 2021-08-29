@@ -9,8 +9,8 @@ const heading = document.getElementById('heading');
 const status = document.getElementById('status');
 const stat = document.querySelector('.stat');
 const gamesList = document.querySelector('.gamesList');
-const filterProperties = ["control", "players", "rotation", "status"];
-const filterDivs = [".control", ".nplayer", ".rotation", ".status"]; //quick and dirty workaround to pass divs to filter function
+const filterProperties = ["control", "players", "rotation"];
+const filterDivs = [".control", ".nplayer", ".rotation"]; //quick and dirty workaround to pass divs to filter function
 let nplayerArray = [];
 let games = [];
 let gamesTxt = `#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons \n`
@@ -127,6 +127,5 @@ document.querySelector('#odfxml').addEventListener('change', () => {
   }
 
   $("#upload").hide();
-  $("#filters").hide();
   updateStatus('Please Wait.  This may take several minutes. <br/> Your computer fan may spin up and sound like it is going to blast off');
 });

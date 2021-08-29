@@ -35,7 +35,8 @@ fetcher('https://raw.githubusercontent.com/Stothe/Games-List-Project/main/mame20
 
        const controlSet = new Set();
        const rotationSet = new Set();
-       const testSet = new Set(); 
+       const videoSet = new Set();
+        
 
       $(xml).find('game').each(function(){
         let $romname = $(this).attr('name');
@@ -45,8 +46,8 @@ fetcher('https://raw.githubusercontent.com/Stothe/Games-List-Project/main/mame20
         let $control = $(this).find('input').attr('control');
         controlSet.add($control);
         let $status = $(this).find('driver').attr('status');
-        testSet.add($status)
         let $displayType = $(this).find('video').attr('screen');
+        videoSet.add($video);
         let $altRomName = $(this).attr('romof');
         let $buttons = $(this).find('input').attr('buttons');
         let $players = $(this).find('input').attr('players');
@@ -61,6 +62,6 @@ fetcher('https://raw.githubusercontent.com/Stothe/Games-List-Project/main/mame20
       // const uniqueControls = metadataArray.map(value => value.control);
       addControlFilter(controlSet, "controlFilter", "control");
       addControlFilter(rotationSet, "rotationFilter", "rotation");
-      addControlFilter(testSet, "statusFilter", "status");
+      addControlFilter(videoSet, "videoFilter",  "video");
 
     });

@@ -9,8 +9,8 @@ const heading = document.getElementById('heading');
 const status = document.getElementById('status');
 const stat = document.querySelector('.stat');
 const gamesList = document.querySelector('.gamesList');
-const filterProperties = ["control", "players", "rotation", "status"];
-const filterDivs = [".control", ".nplayer", ".rotation", ".status"]; //quick and dirty workaround to pass divs to filter function
+const filterProperties = ["control", "players"];
+const filterDivs = ["control", "nplayers"]; //quick and dirty workaround to pass divs to filter function
 let nplayerArray = [];
 let games = [];
 let gamesTxt = `#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons \n`
@@ -23,14 +23,14 @@ let pathSearch = 0;
 * File Builder.  Creates the text file for user to download
 */
 function buildTXTList(){
-  //filterControls(".control"); //temp for testing
+  filterControls(".control"); //temp for testing
 
   //what if we put the filter here so it doesn't run against the entire game list?
-  filteredGames = filterControls();
+  
 
-  for (let i=0; i < filteredGames.length; i += 1) {
-  for (const property in filteredGames[i]){
-    gamesTxt = gamesTxt + `${filteredGames[i][property]};`;
+  for (let i=0; i < games.length; i += 1) {
+  for (const property in games[i]){
+    gamesTxt = gamesTxt + `${games[i][property]};`;
 
   }
   let gamesTxtFix = gamesTxt.slice(0, -1);
@@ -127,6 +127,5 @@ document.querySelector('#odfxml').addEventListener('change', () => {
   }
 
   $("#upload").hide();
-  $("#filters").hide();
   updateStatus('Please Wait.  This may take several minutes. <br/> Your computer fan may spin up and sound like it is going to blast off');
 });

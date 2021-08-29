@@ -9,8 +9,8 @@ const heading = document.getElementById('heading');
 const status = document.getElementById('status');
 const stat = document.querySelector('.stat');
 const gamesList = document.querySelector('.gamesList');
-const filterProperties = ["control", "players", "rotation", "status"];
-const filterDivs = [".control", ".nplayer", ".rotation", ".status"]; //quick and dirty workaround to pass divs to filter function
+const filterProperties = ["control", "players"];
+const filterDivs = ["controlFilter", "nplayerFilter"]; //quick and dirty workaround to pass divs to filter function
 let nplayerArray = [];
 let games = [];
 let gamesTxt = `#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons \n`
@@ -23,22 +23,42 @@ let pathSearch = 0;
 * File Builder.  Creates the text file for user to download
 */
 function buildTXTList(){
-  //filterControls(".control"); //temp for testing
+    for (let i=0; i < games.length; i += 1) {
+      for (const property in games[i]){     
+        let filterID = filterProperties.indexOf(property);
+        const propertyArray = [];
+        //this is only removing specific properties
+        // I need to figure out how to keep this from adding a game if there's filters
 
-  //what if we put the filter here so it doesn't run against the entire game list?
-  filteredGames = filterControls();
+        // if statement here to compare property value to controlArray
+        // this works, but I want to move it closer to object creation
+        // maybe build all properties into an array, check it and then a for loop to push it to the txt file?
+        if(filterID > -1 ){
+          const controlArray = filterControls(filterDivs[filterID]);
+          // console.log(controlArray); // gets filter data for corresponding div
+          let currentControl = games[i][property];
+          if(controlArray.indexOf(currentControl) > -1 ){
+            propertyArray.push( `${games[i][property]};` );
+          } else { //clears array and breaks the loop
+            let propertyArray = [];
+            break;
+          }
 
-  for (let i=0; i < filteredGames.length; i += 1) {
-  for (const property in filteredGames[i]){
-    gamesTxt = gamesTxt + `${filteredGames[i][property]};`;
-
-  }
-  let gamesTxtFix = gamesTxt.slice(0, -1);
-  gamesTxt = gamesTxtFix + "\n";
+        } else {
+          propertyArray.push(`${games[i][property]};` );
+        }
+        console.log(propertyArray);
+        for (const item in propertyArray) {
+          gamesTxt = gamesTxt + `${item};`;
+            
+          }
+        }
+      }
+    let gamesTxtFix = gamesTxt.slice(0, -1);
+    gamesTxt = gamesTxtFix + "\n";
+  
+  downloadToFile(gamesTxt, 'Arcade.txt', 'text/plain' );
 }
-downloadToFile(gamesTxt, 'Arcade.txt', 'text/plain' );
-}
-
 
 // Helper Functions
 
@@ -127,6 +147,5 @@ document.querySelector('#odfxml').addEventListener('change', () => {
   }
 
   $("#upload").hide();
-  $("#filters").hide();
   updateStatus('Please Wait.  This may take several minutes. <br/> Your computer fan may spin up and sound like it is going to blast off');
 });
